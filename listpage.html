@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+ 
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+ <style>
+
+
+        
+caption{
+    display: none;
+}
+.header{
+    background-color:rgb(248 250 252);
+    width: 100%;
+    height: 50px;
+ 
+position: static;
+top: 0;
+}
+.img{
+    width: 180px;
+    margin-left: 30px;
+    padding: 5px;
+}
+.body{
+    background-color: rgb(255, 255, 255);
+}
+.container{
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(243, 243, 243);
+    box-shadow: 10px 10px 0 rgba(255, 250, 250, 0.89);
+}
+select{
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.btn button{
+ 
+    padding: 8px;
+    background-color: blue;
+    color: white;
+    outline:none;
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+     
+
+}
+.pop-up{
+  display: none;
+}
+.show{
+  display: block;
+}
+ i{
+  color: black;
+  padding: 5px;
+ }
+ .modal-dialog{
+  max-width: 700px;
+  max-height: 500px;
+ }
+ .bold{
+  font-weight: 700;
+ }
+ h3{
+  letter-spacing: 2px;
+ }
+    </style>
+</head>
+<body>
+    <div class="body ">
+ <div class="header">
+            <img class="img" src="./exxonmobillogocolor2x.png" alt="">
+        </div>
+        <div class="p-3 m-2 border box-shadow ">
+
+
+
+          <h3 class="">List Page</h3>
+          <div class="container-fluid mt-3 shadow-sm mt-5">
+              <div class="row mb-3">
+                  <div class="form-group col-md-2">
+                      <label for="Input1">Name</label>
+                      <input type="text" class="form-control" id="Input1" placeholder="Enter Name">
+                    </div>
+                 
+                  <div class="form-group col-md-2">
+                    <label for="Select1">Date</label>
+                    <select class="form-control" id="Select1">
+                      <option>Date Range</option>
+                      <option>Monthly</option>
+                      <option>Quarterly</option> 
+                    </select>
+                  </div>
+                  <div class="form-group col-md-2">
+                      <label for="Input1">Start Date</label>
+                      <input type="date" class="form-control" id="Input1" placeholder="name@example.com">
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="Input2">End Date</label>
+                      <input type="date" class="form-control" id="Input2" placeholder="name@example.com">
+                    </div>
+
+                    <div class="form-group d-flex flex-column col-md-2"> 
+                  <label>Status</label>
+                  <select class="form-group " name="" id="" >
+                    <option value="">Assigned</option>
+                    <option value="">Completed</option>
+                    <option value="">Not-Started</option>
+                  </select>
+          </div>
+          <div class="btn">
+            <button class="">Submit</button>
+         </div>
+   </div> 
+               
+                <table class="table table-bordered shadow-sm">
+                    <caption>List of users</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Task Link</th>
+                        <th scope="col">Created</th>
+                        <th scope="col">Asset Type</th>
+                        <th scope="col">Task Lead</th>
+                        <th scope="col">Task Status</th>
+                        <th scope="col">Submitted by</th>
+                        <th scope="col">Actions</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="">https://ishareteam3.na.xom.com/sites/PDF/List/Gis</a></th>
+                        <td>12/5/2022 12:05</td>
+                        <td>Facility</td>
+                        <td>Vb, Manjunath /cs</td>
+                        <td>Unassigned</td>
+                        <td>Trujillo,Marcos M/C</td>
+                        <td class="d-flex">
+                          <div href="" data-toggle="modal" data-target="#myModal" ><i class="fa fa-eye " data-toggle="modal" aria-hidden="true"></i></div>
+                          <div href="" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                          <div href=""><i class="fa fa-trash" aria-hidden="true"></i></div>
+                        </td>
+                      </tr>
+                     <tr>
+                        <th scope="row"><a href="">https://ishareteam3.na.xom.com/sites/PDF/List/Gis</a></th>
+                        <td>15/5/2022 12:05</td>
+                        <td>Pipeline</td>
+                        <td>wala,Yash /CS</td>
+                        <td>Assigned</td>
+                        <td>Davis,christopher L</td>
+                        <td class="d-flex">
+                          <div href="" data-toggle="modal" data-target="#myModal" ><i class="fa fa-eye " data-toggle="modal" aria-hidden="true"></i></div>
+                          <div href="" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                          <div href=""><i class="fa fa-trash" aria-hidden="true"></i></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="">https://ishareteam3.na.xom.com/sites/PDF/List/Gis</a></th>
+                        <td>13/5/2022 12:05</td> 
+                        <td>Facility</td>
+                        <td>Vb, Manjunath /cs</td>
+                        <td>Assigned</td>
+                        <td>Mckey, Michael David</td>
+                        <td class="d-flex">
+                          <div href="" data-toggle="modal" data-target="#myModal" ><i class="fa fa-eye " data-toggle="modal" aria-hidden="true"></i></div>
+                          <div href="" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                          <div href=""><i class="fa fa-trash" aria-hidden="true"></i></div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+        </div>
+                    
+
+
+
+                    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+         <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">View</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        
+
+        <fieldset>
+          <legend>Title</legend>
+          
+          <div class="row">
+          <div class="col-md-4">
+          <div class="form-group d-flex flex-column">
+              <label class="bold" for="email">Originating Link (if SP form was used)</label>
+              <label for="email"><a href="">https://ishareteam3.na.xom.com/sites/PDF/List/PL2474%20</a></label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group d-flex flex-column">
+              <label class="bold" for="email">Id</label>
+              <label for="email">3191</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group d-flex flex-column">
+              <label class="bold" for="email">Assigned To</label>
+              <label  >L,jeevankumar</label>
+            </div>
+          </div>
+      
+          <div class="col-md-4">
+            <div class="form-group d-flex flex-column">
+              <label class="bold" for="email">Completion date</label>
+              <label>20/06/22</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group d-flex flex-column">
+              <label class="bold" for="email">LRMT</label>
+              <label>Tx Chemicals-frienswood</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group d-flex flex-column">
+              <label class="bold" for="email">TLC</label>
+              <label>LA-115</label>
+            </div>
+          </div>
+          </div>
+          
+          
+          </fieldset>
+          
+       
+
+
+
+
+        <a class="d-flex justify-content-end d-block" href="./detail_view.html">View Detail</a>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div> 
+
+            </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+    
+      document.querySelectorAll(".view").forEach(e=>{
+        e.addEventListener("click",function(e){
+          console.log(e);
+      $(".pop-up").toggleClass("show")
+        })
+      })
+        
+      
+    </script>
+</body>
+</html>
