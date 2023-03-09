@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!--  script links  -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    <!--high chart links  -->
+
+    <script src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/highcharts.js"></script>
+    <script src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/modules/data.js"></script>
+    <script
+        src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/modules/drilldown.js"></script>
+    <script
+        src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/modules/series-label.js"></script>
+    <script
+        src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/modules/exporting.js"></script>
+    <script
+        src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/modules/export-data.js"></script>
+    <script
+        src="https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/SiteAssets/code/modules/accessibility.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
+
+    <style>
+        .close-modal-view {
+            position: absolute;
+            top: 0;
+            right: -3rem;
+            font-size: 2rem;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: all 1s;
+            outline: none !important;
+        }
+
+        .close-modal-view:hover {
+            background: none;
+            transform: translateY(3px);
+        }
+
+
+        /* -------------------------- */
+        /* CLASSES TO MAKE MODAL WORK */
+        .hidden {
+            display: none;
+        }
+
+        .modal-view {
+            position: fixed;
+            top: 50%;
+            left: 54%;
+            transform: translate(-50%, -50%);
+            width: 57%;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 3rem 5rem rgb(0 0 0 / 30%);
+            z-index: 10;
+        }
+
+        .overlay-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 5;
+        }
+
+        #data__status--dropdown,
+        #drawing__type--dropdown,
+        #otd-dropdown {
+            height: 46px;
+    padding: 5px;
+    margin: 39px 0 0px 44px;
+    width: 155px;
+    outline: none;
+    border-radius: 7px;
+    border: 1px solid #f7f7f7;
+        }
+
+        .nav-item {
+            cursor: pointer;
+        }
+
+        .nav-item.active,
+        #filter-submit {
+            border-radius: 5px;
+            color: white !important;
+            background-color: blue !important;
+            border: 2px solid rgb(1, 225, 255);
+        }
+
+        .nav a.nav-link.active {
+            border-bottom: 1px solid rgb(1, 225, 255);
+        }
+
+        main.active-show {
+            display: block;
+        }
+
+        main.in-active {
+            display: none;
+        }
+
+        td.editing {
+            border: 1px solid #c0c0c0;
+            border-radius: 10px;
+        }
+
+        td.editing:focus {
+            outline: 2px solid #ccc;
+        }
+
+
+
+        legend {
+
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+
+        .view,
+        .edit,
+        .save {
+            transition: all 2s;
+            cursor: pointer;
+
+        }
+
+        .view:hover,
+        .edit:hover,
+        .save:hover {
+            text-decoration: underline #ccc !important;
+            color: blue !important;
+            transform: translateY(3px);
+        }
+
+        .text-white {
+            text-align: center;
+
+        }
+
+        .highcharts-credits {
+            display: none;
+        }
+
+        #data-status-toggle,#data-type-toggle {
+            margin: 39px 0 0px 39px;
+        }
+
+        #data-not-avialable {
+            text-align: center !important;
+            padding: 50px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav nav-justified m-2">
+        <a class="nav-item nav-link active" data-toggle="tab" name="dashboard">Dashboard</a>
+        <a name="list-page" class="nav-item nav-link" data-toggle="tab">List Page</a>
+        <a name="task-list-page" class="nav-item nav-link" data-toggle="tab">Task List Page</a>
+    </nav>
+
+    <div class="row m-2 p-4 border" id="list__form" action="">
+        <div class="form-group col-md">
+            <label for="name">Name</label>
+            <input id="name" type="text" class="form-control" />
+            <div class="invalid-feedback">Please Enter Name</div>
+        </div>
+        <div class="form-group col-md">
+            <label for="status">Range</label>
+            <select name="" class="form-control" id="range">
+                <option value="date">Date</option>
+                <option value="date-range" selected>Date Range</option>
+            </select>
+            <div class="invalid-feedback">Please Select Range</div>
+        </div>
+        <div class="form-group col-md">
+            <label for="startdate">Start Date</label>
+            <input type="date" class="form-control" id="startdate" />
+            <div class="invalid-feedback">Please Enter Date mm/dd/yyyy</div>
+        </div>
+        <div class="form-group col-md">
+            <label for="enddate">End Date</label>
+            <input type="date" class="form-control" id="enddate" />
+            <div class="invalid-feedback">Please Enter date mm/dd/yyyy</div>
+        </div>
+        <div class="form-group col-md">
+            <label for="status">Status</label>
+            <select name="" class="form-control" id="status">
+                <option value="Assigned">Assigned</option>
+                <option value="Completed">Completed</option>
+                <option value="In Progress">In Progress</option>
+                <option value="In Progress - QC">In Progress - QC</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Ready for QC">Ready for QC</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Unassigned">Unassigned</option>
+            </select>
+            <div class="invalid-feedback">Please Select Status</div>
+        </div>
+        <div class="form-group col-md">
+            <label for="" style="height: 18px"></label>
+            <button type="button" id="filter-submit" class="btn btn-primary btn-block md-btn-inline">
+                Submit
+            </button>
+        </div>
+    </div>
+    <main id="dashboard" class="active-show">
+        <div class="row border m-2">
+            <div class="col-md-12">
+                <ul class="nav status p-2">
+                    <a class="p-1 mr-2 nav-link active" name="bar">Bar Chart</a>
+                    <a class="p-1 mr-2 nav-link" name="line">Line Chart</a>
+                </ul>
+                <figure class="highcharts-figure">
+                    <div id="chart--1"></div>
+                </figure>
+            </div>
+        </div>
+
+        <div class="row border m-2">
+            <select name="" id="drawing__type--dropdown"> </select>
+
+            <div class="col-md-12">
+                <ul id="data-type-toggle" class="nav data-status p-2">
+                    <a class="p-1 mr-2 nav-link active" name="pie">Pie Chart</a>
+                    <a class="p-1 mr-2 nav-link" name="bar">Bar Chart</a>
+                </ul>
+                <figure class="highcharts-figure">
+                    <div id="chart--2"></div>
+                </figure>
+            </div>
+        </div>
+
+
+        <div class="m-2 border">
+            <select name="year" id="otd-dropdown">
+            </select>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <figure class="highcharts-figure">
+                        <div id="chart--3"></div>
+                    </figure>
+                    <div class="row p-4 justify-content-center">
+                        <div class="col-md-3 m-2 bg-success p-4 shadow border-1">
+                            <div class="text-white">
+                                <span>Packages Delivered</span>
+                                <span id="package-delivered" class="text-xl">Loading..</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 m-2 bg-primary p-4 shadow border-1">
+                            <div class="text-white">
+                                <span>Packages Pending </span>
+                                <span id="package-pending" class="text-xl">Loading..</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 m-2 bg-danger p-4 shadow border-1">
+                            <div class="text-white">
+                                <span># Weeks met Target</span>
+                                <span id="package-met-target" class="text-xl">Loading..</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="m-2 border">
+            <select name="data-availability" id="data__status--dropdown"> </select>
+
+            <div class="row">
+                <div class="col md-6">
+                    <ul id="data-status-toggle" class="nav data-status p-2">
+                        <a class="p-1 mr-2 nav-link active" name="pie">Pie Chart</a>
+                        <a class="p-1 mr-2 nav-link" name="bar">Bar Chart</a>
+                    </ul>
+                    <figure class="highcharts-figure">
+                        <div id="chart--4"></div>
+                    </figure>
+                </div>
+                <div class="col md-6 mt-5">
+                    <div class="row p-5 flex-column justify-content-center align-items-center">
+                        <div style="background-color:  rgb(124, 181, 236);" class="col-md-8 m-2   p-4 shadow border-1">
+                            <div class="text-white">
+                                <span>Data Available</span>
+                                <span id="data-available" class="text-xl">Loading..</span>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-2 bg-dark p-4 shadow border-1">
+                            <div class="text-white">
+                                <span>Data Not Available</span>
+                                <span id="data-not-available" class="text-xl">Loading..</span>
+                            </div>
+                        </div>
+                        <div style="background-color: rgb(169, 255, 150);" class="col-md-8 m-2  p-4 shadow border-1">
+                            <div class="text-white">
+                                <span>Data Insufficient</span>
+                                <span id="data-insufficient" class="text-xl">Loading..</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+    </main>
+    <main class="in-active  p-5 m-2 border" id="list-page">
+
+        <table class="rowele__for--listpage">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td name="Title"></td>
+                    <td name="GMOC_x0023_"></td>
+                    <td name="Created"></td>
+                    <td name="AssetType"></td>
+                    <td name="Task_x0020_Lead"></td>
+                    <td name="Task_x0020_Status"></td>
+                    <td name="Submitted_x0020_By"></td>
+                    <td name="actions">
+                        <a id="view" class="view">View</a>
+                        <a id="edit" class="edit">Edit</a>
+                        <a id="save" class="save">Save</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table id="list__table" class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Task link</th>
+                    <th>GMOC</th>
+                    <th>Created</th>
+                    <th>Assets Type</th>
+                    <th>Task Lead</th>
+                    <th>Task Status</th>
+                    <th>Submitted by</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <th>Task link</th>
+                    <th>GMOC</th>
+                    <th>Created</th>
+                    <th>Assets Type</th>
+                    <th>Task Lead</th>
+                    <th>Task Status</th>
+                    <th>Submitted by</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </main>
+    <main class="in-active p-5 m-2 border" id="task-list-page">
+
+        <table class="rowele__for--tasklist">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td name="Task_x0020_Lead"></td>
+                    <td name="SegmentName"></td>
+                    <td name="Task_x0020_Assigned_x0020_Date"></td>
+                    <td name="Task_x0020_Type"></td>
+                    <td name="Task_x0020_Status"></td>
+                    <td name="actions">
+                        <a id="view" class="view">View</a>
+                        <a id="edit" class="edit">Edit</a>
+                        <a id="save" class="save">Save</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table id="tasklist__table" class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Task owner</th>
+                    <th>Task Name</th>
+                    <th>Assigned Date</th>
+                    <th>Assigned Type</th>
+                    <th>Task Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Task owner</th>
+                    <th>Task Name</th>
+                    <th>Assigned Date</th>
+                    <th>Assigned Type</th>
+                    <th>Task Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+            </tfoot>
+        </table>
+
+    </main>
+
+    <div class="modal-view hidden ">
+        <button type="button" class="close-modal-view">&times;</button>
+
+        <div class="row p-3">
+
+            <fieldset class="w-100">
+                <legend>Quick View</legend>
+
+                <div class="row m1 p-3" id="quick-view">
+                    <div class="col-md-4">
+                        <div class="form-group d-flex flex-column">
+                            <label class="bold"> </label>
+                            <label class="normal"> </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group d-flex flex-column">
+                            <label class="bold"> </label>
+                            <label class="normal"> </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group d-flex flex-column">
+                            <label class="bold"></label>
+                            <label class="normal"></label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group d-flex flex-column">
+                            <label class="bold"></label>
+                            <label class="normal"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group d-flex flex-column">
+                            <label class="bold"></label>
+                            <label class="normal"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group d-flex flex-column">
+                            <label class="bold"></label>
+                            <label class="normal"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </fieldset>
+
+        </div>
+    </div>
+
+    <div class="overlay-view hidden"></div>
+
+    <script type="text/javascript">
+        $("#enddate").val(new Date().toISOString().split('T')[0])
+        $("#range").change(function () {
+            if ($("option:selected", this).val() == "date") {
+                $("#enddate").parent().hide()
+                $("#startdate").prev().text("Date")
+            }
+            if ($("option:selected", this).val() == "date-range") {
+                $("#enddate").parent().show()
+                $("#startdate").prev().text("Start Date")
+            }
+        })
+        $(".rowele__for--listpage").hide()
+        $(".rowele__for--tasklist").hide()
+        $("[title=GISTrackerDashboard]").hide();
+        $(document).ready(function () {
+            $("#example").DataTable();
+        });
+        $(".ms-rte-layoutszone-inner p").hide();
+        $("nav a.nav-link").each(function (i, e) {
+            $(e).click(function (e) {
+                $("nav a.nav-link").each(function (i, e) {
+                    $(e).removeClass("active");
+                });
+                $("main.active-show")
+                    .removeClass("active-show")
+                    .addClass("in-active");
+                $("#" + $(e.target).attr("name") + "")
+                    .removeClass("in-active")
+                    .addClass("active-show");
+                $(e.target).addClass("active");
+            });
+        });
+
+
+        $("#submit").click(function (e) {
+            e.preventDefault()
+            var userData = formValidation()
+            if (!userData)
+                $('#validation-modal').modal('show');
+            console.log(userData)
+        })
+
+        ///form- validation
+        function formValidation() {
+            var valid = true;
+            var userInput = {}
+            $("form .form-control").each(function (i, e) {
+                var input = $(e)
+                if (input.val() == "" || input.val() == null) {
+                    input.on("input", validatingInput).addClass("is-invalid")
+                    valid = false
+                }
+                userInput[input.attr("id")] = input.val()
+            })
+            return valid ? userInput : valid
+        }
+
+        ///validating inputs if the field is empty 
+        function validatingInput(e) {
+            $(e.target).removeClass("is-invalid")
+        }
+
+        const modal = document.querySelector('.modal-view');
+        const overlay = document.querySelector('.overlay-view');
+        const btnCloseModal = document.querySelector('.close-modal-view');
+
+        const openModal = function () {
+            modal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        };
+
+        const closeModal = function () {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        };
+
+
+
+        btnCloseModal.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', function (e) {
+            // console.log(e.key);
+
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+
+
+
+        async function ajaxget(url) {
+            var sharePointList = []
+            console.log("calling ajax get")
+            await $.ajax({
+                type: "GET",
+                url: url,
+                headers: {
+                    accept: "application/json; odata=verbose",
+                },
+
+                success: function (data) {
+                    console.log(data, "sharepoint list");
+                    sharePointList = data.d
+                },
+                error: function (error) {
+                    alert("error");
+                },
+            });
+            return sharePointList
+        }
+
+
+
+
+        function getData(data) {
+            return data.map(function (data) {
+                return itemList(data)
+            })
+
+        }
+
+        function itemList(data) {
+            return {
+                Status: data.Task_x0020_Status,
+                Link: data.Title,
+                id: data.ID,
+                Country: data.Country,
+                Name: data.SegmentName,
+                GMOC: data.GMOC_x0023_,
+                ['Data Availability']: data.Data_x0020_Availability,
+                ["Start Date"]: data.Start_x0020_Date?.slice(0, 10),
+                ["Created date"]: data.Created?.slice(0, 10),
+                ["Submitted By"]: data.Submitted_x0020_By,
+                ["Task Lead"]: data.Task_x0020_Lead,
+                ["Assigned Date"]: data.Task_x0020_Assigned_x0020_Date?.slice(0, 10),
+                ["Asset Type"]: data.AssetType,
+                ["TaskAssigned Date"]: data.Task_x0020_Assigned_x0020_Date?.slice(0, 10),
+                ["TaskAssigned Type"]: data.Task_x0020_Type,
+                ["Completed date"]: data.Complete_x0020_Date?.slice(0, 10)
+
+            }
+        }
+
+        function getStatusList(data) {
+            var obj = {}
+            var dateList = {}
+                , statuslist = {}
+                , tempStatus = {};
+            data.forEach(function (data) {
+                var date = new Date(data["Start Date"]).getFullYear()
+                if (date == 1970) date = "Date Not Available"
+                dateList[date] = []
+            })
+            data.forEach(function (data) {
+                var date = new Date(data["Start Date"]).getFullYear()
+                if (date == 1970) date = "Date Not Available"
+                dateList[date].push(data)
+            })
+            for (let val in dateList) {
+                dateList[val].map(function (list) {
+                    statuslist[list.Status] = (statuslist[list.Status] || 0) + 1
+                })
+                tempStatus[val] = statuslist;
+                statuslist = {}
+            }
+            $("ul.status .nav-link").each(function (i, e) {
+                $(e).click(function (e) {
+                    statusChart(tempStatus, $(e.target).attr('name'))
+                    $("ul.status .nav-link").each(function (i, e) {
+                        $(e).removeClass("active")
+                    })
+                    $(e.target).addClass("active")
+                })
+            })
+            obj.status = tempStatus;
+
+            obj.dateList = dateList;
+            return obj;
+        }
+
+
+        function getcurrentYearList(data) {
+
+            const currentYear = new Date().getFullYear();
+            const currentYearList = [];
+            data.forEach(function (data) {
+                if (new Date(data["Start Date"]).getFullYear() == currentYear) {
+                    currentYearList.push(data)
+                }
+            })
+            return currentYearList;
+
+        }
+
+
+        (async function () {
+            const list = await ajaxget(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Gis%20list')/items?$top=5000");
+            const data = getData(list.results)
+            const obj = getStatusList(data)
+            const currentYearList = getcurrentYearList(data)
+
+            statusChart(obj.status, "bar")
+
+            dataAvailabilitychart(data, obj.dateList, currentYearList)
+
+            otdChart(data, obj.dateList, currentYearList, obj.status)
+
+            ///list page////
+            ListPageData(currentYearList)
+
+
+            //tasklistpage////
+            TaskListPageData(currentYearList)
+
+
+            console.log(data, obj, currentYearList)
+
+        }
+        )()
+
+
+
+
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        function statusChart(data, chartType) {
+            var yearList = Object.keys(data);
+            console.log(data, "status chart")
+            statuslistObject = {
+                Assigned: [],
+                Completed: [],
+                "In Progress": [],
+                "In Progress - QC": [],
+                "On Hold": [],
+                "Ready for QC": [],
+                Rejected: [],
+                "Sent for Posting": [],
+                Unassigned: [],
+            };
+
+            let count = 0;
+            for (const key1 in data) {
+
+                for (const key2 in data[key1]) {
+                    if (data[key1].null) delete data[key1].null
+                    statuslistObject[key2].push(data[key1][key2]);
+                }
+                for (const key3 in statuslistObject) {
+                    if (!statuslistObject[key3][count])
+                        statuslistObject[key3][count] = 0;
+                }
+                count++;
+            }
+
+            Highcharts.chart("chart--1", {
+                chart: {
+                    type: chartType,
+                },
+                title: {
+                    text: "Work Status",
+                },
+                xAxis: {
+                    categories: yearList,
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: "Number of Files",
+                    },
+                },
+                legend: {
+                    reversed: true,
+                },
+                plotOptions: {
+                    series: {
+                        stacking: "normal",
+                        dataLabels: {
+                            enabled: true,
+                        },
+                    },
+                },
+                series: [{
+                    name: "Rejected",
+                    color: "#f53838",
+                    data: statuslistObject["Rejected"],
+                }, {
+                    name: "Sent for Posting",
+                    color: "#00A3E1",
+                    data: statuslistObject["Sent for Posting"],
+                }, {
+                    name: "On Hold",
+                    color: "#7474dd",
+                    data: statuslistObject["On Hold"],
+                }, {
+                    name: "Unassigned",
+                    color: "#A5A9A0",
+                    data: statuslistObject["Unassigned"],
+                }, {
+                    name: "Assigned",
+                    color: "#dd9e7b",
+                    data: statuslistObject["Assigned"],
+                }, {
+                    name: "In Progress - QC",
+                    color: "#09cf6a",
+                    data: statuslistObject["In Progress - QC"],
+                },
+                {
+                    name: "Ready for QC",
+                    color: "#ccc",
+                    data: statuslistObject["Ready for QC"],
+                },
+                {
+                    name: "In Progress",
+                    color: "#4cbc84",
+                    data: statuslistObject["In Progress"],
+                }, {
+                    name: "Completed",
+                    color: " #009A17",
+                    data: statuslistObject["Completed"],
+                },],
+            });
+        }
+    </script>
+    <script type="text/javascript">
+
+        function otdDropdown(data, selected) {
+            $("#otd-dropdown").html("")
+
+            for (let i = 0; i < data.length; i++) {
+                var option = $('<option>').text(data[i]).attr("name", data[i])
+                if (data[i] == selected) {
+                    option.attr({ "selected": 'selected' })
+                }
+
+                $("#otd-dropdown").append(option)
+
+            }
+
+        }
+        function getISOWeeks(y) {
+            var d,
+                isLeap;
+
+            d = new Date(y, 0, 1);
+            isLeap = new Date(y, 1, 29).getMonth() === 1;
+
+            //check for a Jan 1 that's a Thursday or a leap year that has a 
+            //Wednesday jan 1. Otherwise it's 52
+            return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52
+        }
+
+
+        function getISOWeeksInYear(year) {
+
+            var length = getISOWeeks(year)
+            var ISOWeeks = Array(length).fill('')
+            for (let i = 0; i < length; i++) {
+                let a = i + 1
+                ISOWeeks[i] = "Week-" + a + ""
+            }
+            return ISOWeeks;
+        }
+        function otdChart(data, dateList, currentYearList, status) {
+
+            var yearList = Object.keys(dateList);
+            var currentYear = new Date().getFullYear()
+            otdDropdown(yearList, currentYear)
+
+            $("#otd-dropdown").change(function (e) {
+                var optionSelected = $("option:selected", this);
+                var valueSelected = this.value;
+                var weeks = getISOWeeksInYear(valueSelected)
+                OTDHIGHCHART(dateList[valueSelected], weeks, status[valueSelected])
+
+
+            })
+
+
+            const ISOWeeks = getISOWeeksInYear(currentYear)
+            console.log(ISOWeeks)
+
+            OTDHIGHCHART(dateList[currentYear], ISOWeeks, status[currentYear])
+
+        }
+
+
+        function OTDHIGHCHART(data, ISOWeeks, status) {
+
+            const weeks = ISOWeeks;
+
+            var OTD = [];
+
+            var TARGET = [];
+            var TOTAL_NO_PACKAGE = [];
+
+            var arry = Array(weeks.length).fill(0)
+
+            var otdNumberOfDeliveried = {}
+
+            function weekYear(get) {
+                currentDate = new Date(get);
+                startDate = new Date(currentDate.getFullYear(), 0, 1);
+                var days = Math.floor((currentDate - startDate) /
+                    (24 * 60 * 60 * 1000));
+
+                return Math.ceil(days / 7);
+            }
+
+            for (let i = 0; i < data.length; i++) {
+                if (data[i]['Completed date']) {
+                    let weekD = weekYear(data[i]['Completed date'])
+                    otdNumberOfDeliveried[weekD] = (otdNumberOfDeliveried[weekD] || 0) + 1
+                }
+            }
+
+
+            console.log(otdNumberOfDeliveried)
+
+            let sum = 0;
+            let total = 0;
+            let metTarget = 0;
+            for (let i in otdNumberOfDeliveried) {
+                if (otdNumberOfDeliveried[i] >= 50) {
+                    metTarget++;
+                }
+                sum += otdNumberOfDeliveried[i]
+            }
+
+            $("#package-delivered").text(sum)
+
+
+            total = status.Assigned || 0
+            total += status.Unassigned || 0
+
+            $("#package-pending").text(total)
+
+            $("#package-met-target").text(metTarget + " Weeks")
+
+
+
+            for (let i in otdNumberOfDeliveried) {
+                arry[i - 1] = otdNumberOfDeliveried[i]
+            }
+
+
+            TOTAL_NO_PACKAGE = arry;
+
+            for (let i = 0; i < weeks.length; i++) {
+                OTD[i] = Math.floor(Math.random() * i + 100);
+                TARGET[i] = 50;
+            }
+
+
+            Highcharts.chart("chart--3", {
+                chart: {
+                    zoomType: "xy",
+                },
+
+                title: {
+                    text: "Average weekly Target and Total Number of Package deliverd ",
+
+                    align: "center",
+                },
+
+                subtitle: {
+                    text: " Average weekly Target and Total Number of Package deliverd ",
+
+                    align: "center",
+                },
+
+                xAxis: [
+                    {
+                        categories: weeks,
+
+                        crosshair: true,
+                    },
+                ],
+
+                yAxis: [
+                    {
+                        // Primary yAxis
+
+                        labels: {
+                            format: "{value} %",
+
+                            style: {
+                                color: Highcharts.getOptions().colors[1],
+                            },
+                        },
+
+                        title: {
+                            text: "OTD",
+
+                            style: {
+                                color: Highcharts.getOptions().colors[2],
+                            },
+                        },
+                    },
+
+                    {
+                        // Secondary yAxis
+
+                        title: {
+                            text: "Precipitation",
+
+                            style: {
+                                color: Highcharts.getOptions().colors[0],
+                            },
+                        },
+
+                        labels: {
+                            format: "{value}",
+
+                            style: {
+                                color: Highcharts.getOptions().colors[0],
+                            },
+                        },
+
+                        // Secondary yAxis
+
+                        title: {
+                            text: "Target",
+
+                            style: {
+                                color: Highcharts.getOptions().colors[0],
+                            },
+                        },
+
+                        labels: {
+                            format: "{value}",
+
+                            style: {
+                                color: Highcharts.getOptions().colors[0],
+                            },
+                        },
+
+                        opposite: true,
+                    },
+                ],
+
+                tooltip: {
+                    shared: true,
+                },
+
+                legend: {
+                    align: "center",
+
+                    x: 0,
+
+                    verticalAlign: "top",
+
+                    y: 20,
+
+                    floating: true,
+
+                    backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || // theme
+                        "white",
+                },
+
+                series: [
+                    {
+                        name: "OTD",
+
+                        type: "column",
+
+                        yAxis: 1,
+
+                        data: OTD,
+
+                        tooltip: {
+                            valueSuffix: "",
+                        },
+                    },
+
+                    {
+                        name: "Total No. of drwaings delivered",
+
+                        type: "spline",
+
+                        data: TOTAL_NO_PACKAGE,
+
+                        tooltip: {
+                            valueSuffix: "",
+                        },
+                    },
+
+                    {
+                        name: "Target",
+
+                        type: "spline",
+
+                        data: TARGET,
+
+                        tooltip: {
+                            valueSuffix: "",
+                        },
+                    },
+                ],
+            });
+
+            var colors = Highcharts.getOptions().colors,
+                categories = ["data available", "data not available"],
+                data = [
+                    {
+                        y: 61.04,
+
+                        color: colors[9],
+
+                        drilldown: {
+                            name: "data available",
+
+                            categories: ["data available"],
+
+                            data: [40],
+                        },
+                    },
+
+                    {
+                        y: 9.47,
+
+                        color: colors[1],
+
+                        drilldown: {
+                            name: "data not available",
+
+                            categories: ["data not available"],
+
+                            data: [20],
+                        },
+                    },
+                ],
+                browserData = [],
+                versionsData = [],
+                i,
+                j,
+                dataLen = data.length,
+                drillDataLen,
+                brightness;
+
+            // Build the data arrays
+
+            for (i = 0; i < dataLen; i += 1) {
+                // add browser data
+
+                browserData.push({
+                    name: categories[i],
+
+                    y: data[i].y,
+
+                    color: data[i].color,
+                });
+
+                // add version data
+
+                drillDataLen = data[i].drilldown.data.length;
+
+                for (j = 0; j < drillDataLen; j += 1) {
+                    brightness = 0.2 - j / drillDataLen / 5;
+
+                    versionsData.push({
+                        name: data[i].drilldown.categories[j],
+
+                        y: data[i].drilldown.data[j],
+
+                        color: Highcharts.color(data[i].color).brighten(brightness).get(),
+                    });
+                }
+            }
+        }
+    </script>
+    <script>
+
+
+
+
+          $("#drawing__type--dropdown").change(function (e) {
+                var optionSelected = $("option:selected", this);
+                var valueSelected = this.value;
+                $("#data-type-toggle a:nth(0)").addClass('active')
+                $("#data-type-toggle a:nth(1)").removeClass('active')
+               // dataStausPieChart(getDataAvalibity(dateList[valueSelected]), "pie")
+
+            })
+
+            $("ul#data-type-toggle .nav-link").each(function (i, e) {
+                $(e).click(function (e) {
+                   // dataStausPieChart(getDataAvalibity(dateList[$("#data__status--dropdown").val()]), $(e.target).attr('name'))
+                    $("ul#data-type-toggle .nav-link").each(function (i, e) {
+                        $(e).removeClass("active")
+                    })
+                    $(e.target).addClass("active")
+                })
+            })
+
+        // Create the chart
+        Highcharts.chart("chart--2", {
+            chart: {
+                type: "pie",
+            },
+            title: {
+                text: "Drawing Type",
+                align: "center",
+            },
+            subtitle: {
+                text: "",
+                align: "left",
+            },
+
+            accessibility: {
+                announceNewData: {
+                    enabled: true,
+                },
+                point: {
+                    valueSuffix: "%",
+                },
+            },
+
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: "{point.name}: {point.y:.1f}%",
+                    },
+                },
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
+            },
+
+            series: [{
+                name: "Browsers",
+                colorByPoint: true,
+                data: [{
+                    name: "Civil/Structural",
+                    y: 40.04,
+                    drilldown: "Civil/Structural",
+                }, {
+                    name: "Mechanical/Process",
+                    y: 52.02,
+                    drilldown: "Mechanical/Process",
+                }, {
+                    name: "Electrical/Instrumentation",
+                    y: 7.04,
+                    drilldown: "Electrical/Instrumentation",
+                }],
+            },],
+
+        });
+    </script>
+
+
+    <script type="text/javascript">
+
+
+        function dataAvailabilitychart(data, dateList, currentYearList) {
+
+            var dropdown = Object.keys(dateList)
+            var currentYear = new Date().getFullYear()
+            function dataStatusDropdown(data, selected) {
+                for (let i = 0; i < data.length; i++) {
+                    var option = $('<option>').text(data[i]).attr("name", data[i])
+                    if (data[i] == selected) {
+                        option.attr({ "selected": 'selected' })
+                    }
+
+                    $("#data__status--dropdown").append(option)
+
+                }
+
+            }
+
+
+
+
+            function getDataAvalibity(data) {
+                var status = {
+                    available: 0,
+                    notAvailable: 0,
+                    insufficient: 0,
+                }
+
+
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i]['Data Availability'] == "Available") status.available++
+                    if (data[i]['Data Availability'] == "Not Available" || !data['Data Availability']) status.notAvailable++
+                    if (data[i]['Data Availability'] == "Insufficient") status.insufficient++
+                }
+
+                return status;
+            }
+            dataStatusDropdown(dropdown, currentYear)
+            var dataStatus = getDataAvalibity(currentYearList)
+
+
+            $("#data__status--dropdown").change(function (e) {
+                var optionSelected = $("option:selected", this);
+                var valueSelected = this.value;
+                $("#data-status-toggle a:nth(0)").addClass('active')
+                $("#data-status-toggle a:nth(1)").removeClass('active')
+                dataStausPieChart(getDataAvalibity(dateList[valueSelected]), "pie")
+
+            })
+
+            $("ul#data-status-toggle .nav-link").each(function (i, e) {
+                $(e).click(function (e) {
+                    dataStausPieChart(getDataAvalibity(dateList[$("#data__status--dropdown").val()]), $(e.target).attr('name'))
+                    $("ul#data-status-toggle .nav-link").each(function (i, e) {
+                        $(e).removeClass("active")
+                    })
+                    $(e.target).addClass("active")
+                })
+            })
+
+            dataStausPieChart(dataStatus, "pie")
+
+
+        }
+
+
+
+        function dataStausPieChart(data, label) {
+            console.log(data)
+            let total = 0;
+            total += data.available;
+            total += data.notAvailable;
+            total += data.insufficient;
+
+            function getpercentage(amount) {
+                return amount / total * 100;
+            }
+
+
+
+            $("#data-available").text(data.available)
+
+            $("#data-not-available").text(data.notAvailable)
+
+            $("#data-insufficient").text(data.insufficient)
+
+            // Data retrieved from https://netmarketshare.com/
+            // Build the chart
+            Highcharts.chart('chart--4', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: label
+                },
+                title: {
+                    text: ' Data Availability Status ',
+                    align: 'center'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'GIS',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Data Available',
+                        y: data.available,
+                        sliced: true,
+                        selected: true
+                    }, {
+                        name: 'Data Not Available',
+                        y: data.notAvailable,
+                    }, {
+                        name: 'Data Insufficient',
+                        y: data.insufficient
+                    }]
+
+                }]
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+
+        function ListPageData(data) {
+            $('#list__table tbody tr').remove();
+            data.forEach(function (data) {
+                bindingTableRow(data)
+            })
+
+        }
+
+        function mergeCode() {
+
+        }
+        function editHandlerForListPage() {
+            $(this).next().show();
+            $(this).hide();
+            const id = $(this).attr("id")
+            $($(this).parent()[0].parentNode)
+                .find("td")
+                .not(':first')
+                .not(":last")
+                .each(function (i, e) {
+                    var td = $(e)
+                    td.attr("contenteditable", true).addClass("editing");
+                    if (i == 0) {
+                        $(e).focus();
+                    }
+
+                    console.log(td.attr('name'), td.text())
+
+                });
+        }
+
+        function saveHandlerForListPage() {
+            $(this).prev().show();
+            $(this).hide();
+            $($(this).parent()[0].parentNode)
+                .find("td")
+                .not(":last")
+                .each(function (i, e) {
+                    $(e).attr("contenteditable", false).removeClass("editing");
+                });
+
+
+
+        }
+
+        async function viewHandlerForListPage() {
+            openModal()
+            var id = $(this).attr('id');
+            var item = await ajaxget(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Gis%20list')/items(" + id + ")");
+            var data = itemList(item)
+            console.log(data)
+            const label1 = ["Name", "Start Date", "Completed date", "TaskAssigned Date", "TaskAssigned Type", "Country"]
+            $("#quick-view").children().each(function (i, e) {
+                $("[class=bold]", $(e).children()[0]).text(label1[i])
+                $("[class=normal]", $(e).children()[0]).text(data[label1[i]] || " ")
+            })
+
+        }
+
+
+
+
+
+
+        /* binding data to table  */
+        function bindingTableRow(data) {
+            let id = data.id
+            let gmoc = data.GMOC || ""
+            var rowElement = $("table.rowele__for--listpage tbody tr").clone()
+            $("[name=Title]", rowElement).html("<a href=" + data.Link + ">Link</a>")
+            $("[name=GMOC_x0023_]", rowElement).html("<a href='http://goto/GMOC-CR?" + gmoc + "'>" + gmoc + "</a>")
+            $("[name=Created]", rowElement).text(data["Created date"] || " ")
+            $("[name=AssetType]", rowElement).text(data["Asset Type"] || " ")
+            $("[name=Task_x0020_Lead]", rowElement).text(data["Task Lead"] || " ")
+            $("[name=Task_x0020_Status]", rowElement).text(data.Status || " ")
+            $("[name=Submitted_x0020_By]", rowElement).text(data["Submitted By"] || " ")
+            $("[name=actions] .view", rowElement).attr("id", id).click(viewHandlerForListPage)
+            $("[name=actions] .edit", rowElement).attr("id", id).click(editHandlerForListPage)
+            $("[name=actions] .save", rowElement).attr("id", id).click(saveHandlerForListPage).hide()
+            $("#list__table tbody").append(rowElement)
+        }
+
+
+    </script>
+
+    <script type="text/javascript">
+        function editHandlerForTaskListPage() {
+            $(this).next().show();
+            $(this).hide();
+            $($(this).parent()[0].parentNode)
+                .find("td")
+                .not(":last")
+                .each(function (i, e) {
+                    $(e).attr("contenteditable", true).addClass("editing");
+                    if (i == 0) {
+                        $(e).focus();
+                    }
+                });
+        }
+
+        function saveHandlerForTaskListPage() {
+            $(this).prev().show();
+            $(this).hide();
+            $($(this).parent()[0].parentNode)
+                .find("td")
+                .not(":last")
+                .each(function (i, e) {
+                    $(e).attr("contenteditable", false).removeClass("editing");
+                });
+        }
+        function TaskListPageData(data) {
+            $('#tasklist__table tbody tr').remove();
+            data.forEach(function (data) {
+                tasklistTableHandler(data)
+            })
+
+        }
+
+
+
+
+
+        async function viewHandlerForTaskListPage() {
+            openModal()
+            var id = $(this).attr('id');
+            var item = await ajaxget(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Gis%20list')/items(" + id + ")");
+            var data = itemList(item)
+            console.log(data)
+            const label1 = ["GMOC", "Start Date", "Completed date", "Submitted By", "Task Lead", "Country"]
+
+            $("#quick-view").children().each(function (i, e) {
+                $("[class=bold]", $(e).children()[0]).text(label1[i])
+                $("[class=normal]", $(e).children()[0]).text(data[label1[i]] || " ")
+            })
+
+
+        }
+
+
+        /* binding data to table  */
+        function tasklistTableHandler(data) {
+            let id = data.id
+            var rowElement = $("table.rowele__for--tasklist tbody tr").clone()
+            $("[name=Task_x0020_Lead]", rowElement).html(data["Task Lead"] || " ")
+            $("[name=SegmentName]", rowElement).text(data.Name || " ")
+            $("[name=Task_x0020_Assigned_x0020_Date]", rowElement).text(data["TaskAssigned Date"] || " ")
+            $("[name=Task_x0020_Type]", rowElement).text(data["TaskAssigned Type"] || " ")
+            $("[name=Task_x0020_Status]", rowElement).text(data.Status || " ")
+            $("[name=actions] .view", rowElement).attr("id", id).click(viewHandlerForTaskListPage)
+            $("[name=actions] .edit", rowElement).attr("id", id).click(editHandlerForTaskListPage)
+            $("[name=actions] .save", rowElement).attr("id", id).click(saveHandlerForTaskListPage).hide()
+            $("#tasklist__table tbody").append(rowElement)
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        // Common functions
+        Date.prototype.mmddyyyyformat = function () {
+            var mm = this.getMonth() + 1; // getMonth() is zero-based
+            var dd = this.getDate();
+            if (this.getFullYear() == "1970") {
+                return "";
+            }
+            return [(mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd,
+            this.getFullYear()
+            ].join('/');
+        };
+
+
+        Date.prototype.sharepoint = function (time) {
+            var mm = this.getMonth() + 1; // getMonth() is zero-based
+            var dd = this.getDate();
+
+            return [this.getFullYear(),
+            (mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd
+            ].join('-') + time;
+        };
+    </script>
+
+
+
+    <script type="text/javascript">
+
+
+        var filterUsers = function (users) {
+            if ($("#name").val()) {
+                keyword = $("#name").val().toLowerCase();
+                filtered_users = users.filter(function (user) {
+                    user = user['Task Lead'].toLowerCase();
+                    return user.indexOf(keyword) > -1;
+                });
+
+                return filtered_users;
+            }
+            return users
+        }
+
+
+        var filterUsersStatus = function (users) {
+            var keyword = $("#status").val()
+            filtered_users = users.filter(function (user) {
+                return user["Status"] == keyword;
+            });
+            return filtered_users;
+        }
+
+
+        $("#filter-submit").click(async function (ele) {
+            var endDate, startDate, data, list;
+
+
+
+
+            if ($("[name=dashboard]").hasClass("active")) {
+                startDate = $("#startdate").val()
+                endDate = $("#enddate").val()
+                if ($("#range").val() == "date") {
+                    endDate = startDate
+                }
+                data = await ajaxget(search(startDate, endDate))
+                var filterUser = filterUsers(getData(data.results))
+                var filteredWithStatus = filterUsersStatus(filterUser)
+                if (filteredWithStatus.length) {
+                    console.log("dashboard", filteredWithStatus)
+                }
+                else {
+
+                }
+            }
+
+
+
+            if ($("[name=list-page]").hasClass("active")) {
+                startDate = $("#startdate ").val()
+                endDate = $("#enddate").val()
+                startDate = $("#startdate").val()
+                endDate = $("#enddate").val()
+                if ($("#range").val() == "date") {
+                    endDate = startDate
+                }
+                data = await ajaxget(search(startDate, endDate))
+
+                var filterUser = filterUsers(getData(data.results))
+                var filteredWithStatus = filterUsersStatus(filterUser)
+                if (filteredWithStatus.length) {
+                    ListPageData(filteredWithStatus)
+                    if ($("#list__table tr").length >= 20) {
+                        $("#list__table tfoot").show()
+                    }
+                    console.log(filteredWithStatus)
+                }
+                else {
+                    $('#list__table tbody tr').remove();
+                    $("#list__table tfoot").hide()
+                    var row = $("<tr>").html("<td colspan=8 id='data-not-avialable' > DATA NOT AVILABLE</td>")
+                    $("#list__table tbody").append(row)
+                }
+            }
+            if ($("[name=task-list-page]").hasClass("active")) {
+                startDate = $("#startdate").val()
+                endDate = $("#enddate").val()
+                startDate = $("#startdate").val()
+                endDate = $("#enddate").val()
+                if ($("#range").val() == "date") {
+                    endDate = startDate
+                }
+                data = await ajaxget(search(startDate, endDate))
+                var filterUser = filterUsers(getData(data.results))
+                var filteredWithStatus = filterUsersStatus(filterUser)
+                if (filteredWithStatus.length) {
+                    TaskListPageData(filteredWithStatus)
+                    if ($("#tasklist__table tr").length >= 20) {
+                        $("#tasklist__table tfoot").show()
+                    }
+                    console.log(filteredWithStatus)
+                }
+
+                else {
+                    $('#tasklist__table tbody tr').remove();
+                    $("#tasklist__table tfoot").hide()
+                    var row = $("<tr>").html("<td colspan=6 id='data-not-avialable' > DATA NOT AVILABLE</td>")
+                    $("#tasklist__table tbody").append(row)
+                }
+            }
+
+        });
+
+        // get search filters and get data
+        function search(startDate, endDate) {
+            var data = [];
+            console.log("search function")
+            // var startDate = $("#searchStartDate").val();
+
+            if (startDate) {
+                startDate = startDate + "T00:00:00.000Z";
+            } else {
+                var date = new Date();
+                date.setDate(date.getDate() - 30)
+                startDate = date.sharepoint("T00:00:00.000Z")
+                $("#startdate").val(startDate.toLocaleString().split("T")[0])
+            }
+            //   var endDate = $("#searchEndDate").val();
+            if (endDate) {
+                endDate = endDate + "T23:59:59.999Z";
+            } else {
+                var date = new Date();
+                endDate = date.sharepoint("T23:59:59.999Z")
+            }
+            var filter = "";
+            var filterName = $("#filterName").val()
+            if (filterName) {
+                filter = "((Start_x0020_Date ge " + startDate + ") and (Start_x0020_Date le " + endDate + ") and (startswith(Task_x0020_Lead, " + filterName + ")))";
+            } else {
+                filter = "((Start_x0020_Date ge '" + startDate + "') and (Start_x0020_Date le '" + endDate + "'))";
+            } https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/Lists
+
+            return _spPageContextInfo.webAbsoluteUrl + "/_api/Web/Lists/GetByTitle('Gis%20list')/items?$top=5000&$filter=" + filter;
+        }
+
+
+    </script>
+</body>
+
+</html>
