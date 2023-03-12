@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -88,12 +88,12 @@
         #drawing__type--dropdown,
         #otd-dropdown {
             height: 46px;
-    padding: 5px;
-    margin: 39px 0 0px 44px;
-    width: 155px;
-    outline: none;
-    border-radius: 7px;
-    border: 1px solid #f7f7f7;
+            padding: 5px;
+            margin: 39px 0 0px 44px;
+            width: 155px;
+            outline: none;
+            border-radius: 7px;
+            border: 1px solid #f7f7f7;
         }
 
         .nav-item {
@@ -167,13 +167,17 @@
             display: none;
         }
 
-        #data-status-toggle,#data-type-toggle {
+        #data-status-toggle,
+        #data-type-toggle {
             margin: 39px 0 0px 39px;
         }
 
         #data-not-avialable {
             text-align: center !important;
             padding: 50px !important;
+        }
+        a{
+            cursor: pointer;
         }
     </style>
 </head>
@@ -187,8 +191,8 @@
 
     <div class="row m-2 p-4 border" id="list__form" action="">
         <div class="form-group col-md">
-            <label for="name">Name</label>
-            <input id="name" type="text" class="form-control" />
+            <label for="task-lead">Task Lead</label>
+            <input id="task-lead"  type="text" class="form-control" />
             <div class="invalid-feedback">Please Enter Name</div>
         </div>
         <div class="form-group col-md">
@@ -212,6 +216,7 @@
         <div class="form-group col-md">
             <label for="status">Status</label>
             <select name="" class="form-control" id="status">
+                <option selected disabled value="not-selected">Select Status</option>
                 <option value="Assigned">Assigned</option>
                 <option value="Completed">Completed</option>
                 <option value="In Progress">In Progress</option>
@@ -230,8 +235,17 @@
             </button>
         </div>
     </div>
+
+
+
     <main id="dashboard" class="active-show">
+
+
+
+
+
         <div class="row border m-2">
+           
             <div class="col-md-12">
                 <ul class="nav status p-2">
                     <a class="p-1 mr-2 nav-link active" name="bar">Bar Chart</a>
@@ -242,11 +256,12 @@
                 </figure>
             </div>
         </div>
+<!--  first chart  end -->
+        <div class="border m-2">
 
-        <div class="row border m-2">
-            <select name="" id="drawing__type--dropdown"> </select>
-
-            <div class="col-md-12">
+        <select name="" id="drawing__type--dropdown"> </select>
+<div class="row">
+            <div class="col-md-6">
                 <ul id="data-type-toggle" class="nav data-status p-2">
                     <a class="p-1 mr-2 nav-link active" name="pie">Pie Chart</a>
                     <a class="p-1 mr-2 nav-link" name="bar">Bar Chart</a>
@@ -255,86 +270,131 @@
                     <div id="chart--2"></div>
                 </figure>
             </div>
+
+            <div class="col-md-6 mt-5">
+
+
+                <div class="row p-5 flex-column justify-content-center align-items-center">
+                    <div style="background-color:  #8A307F;" class="col-md-8 m-2   p-4 shadow border-1">
+                        <div class="text-white">
+                            <span>Civil/Structural</span>
+                            <span id="civil-data" class="text-xl">Loading..</span>
+                        </div>
+                    </div>
+                    <div style="background-color: #174a7b;" class="col-md-8 m-2  p-4 shadow border-1">
+                        <div class="text-white">
+                            <span>Electrical/Instrumentation</span>
+                            <span id="electrical-data" class="text-xl">Loading..</span>
+                        </div>
+                    </div>
+                    <div style="background-color:  #54ddc4;" class="col-md-8 m-2  p-4 shadow border-1">
+                        <div class="text-white">
+                            <span>Mechanical/Process</span>
+                            <span id="mechanical-data" class="text-xl">Loading..</span>
+                        </div>
+                    </div>
+                </div>
+
         </div>
-
-
+    </div>
+</div>
+<!--  second  chart  end -->
         <div class="m-2 border">
-            <select name="year" id="otd-dropdown">
-            </select>
-            <div class="row">
 
-                <div class="col-md-12">
+            <select name="year" id="otd-dropdown"> </select>
+         
+                     <div class="col-md-12">
+
+
                     <figure class="highcharts-figure">
                         <div id="chart--3"></div>
                     </figure>
+
+
                     <div class="row p-4 justify-content-center">
+                        
                         <div class="col-md-3 m-2 bg-success p-4 shadow border-1">
                             <div class="text-white">
                                 <span>Packages Delivered</span>
                                 <span id="package-delivered" class="text-xl">Loading..</span>
                             </div>
                         </div>
+
                         <div class="col-md-3 m-2 bg-primary p-4 shadow border-1">
                             <div class="text-white">
                                 <span>Packages Pending </span>
                                 <span id="package-pending" class="text-xl">Loading..</span>
                             </div>
                         </div>
+
                         <div class="col-md-3 m-2 bg-danger p-4 shadow border-1">
                             <div class="text-white">
                                 <span># Weeks met Target</span>
                                 <span id="package-met-target" class="text-xl">Loading..</span>
                             </div>
                         </div>
+
                     </div>
+
+
                 </div>
             </div>
-        </div>
+        
+
+
+<!--  third  chart  end -->
 
 
 
 
         <div class="m-2 border">
             <select name="data-availability" id="data__status--dropdown"> </select>
+ <div class="row">
 
-            <div class="row">
-                <div class="col md-6">
+         <div class="col-md-6">
+                   
                     <ul id="data-status-toggle" class="nav data-status p-2">
                         <a class="p-1 mr-2 nav-link active" name="pie">Pie Chart</a>
                         <a class="p-1 mr-2 nav-link" name="bar">Bar Chart</a>
                     </ul>
+
                     <figure class="highcharts-figure">
                         <div id="chart--4"></div>
                     </figure>
+
                 </div>
-                <div class="col md-6 mt-5">
+
+                <div class="col-md-6 mt-5">
+                    
+                    
                     <div class="row p-5 flex-column justify-content-center align-items-center">
+                        
                         <div style="background-color:  rgb(124, 181, 236);" class="col-md-8 m-2   p-4 shadow border-1">
                             <div class="text-white">
                                 <span>Data Available</span>
                                 <span id="data-available" class="text-xl">Loading..</span>
                             </div>
                         </div>
+
                         <div class="col-md-8 m-2 bg-dark p-4 shadow border-1">
                             <div class="text-white">
                                 <span>Data Not Available</span>
                                 <span id="data-not-available" class="text-xl">Loading..</span>
                             </div>
                         </div>
+
                         <div style="background-color: rgb(169, 255, 150);" class="col-md-8 m-2  p-4 shadow border-1">
                             <div class="text-white">
                                 <span>Data Insufficient</span>
                                 <span id="data-insufficient" class="text-xl">Loading..</span>
                             </div>
                         </div>
+
                     </div>
 
-
-
-                </div>
-
-
-
+             </div>
+             </div>
+ </div>
     </main>
     <main class="in-active  p-5 m-2 border" id="list-page">
 
@@ -397,6 +457,7 @@
                     <td name="Task_x0020_Assigned_x0020_Date"></td>
                     <td name="Task_x0020_Type"></td>
                     <td name="Task_x0020_Status"></td>
+                    <td name="Data_x0020_Availability"></td>
                     <td name="actions">
                         <a id="view" class="view">View</a>
                         <a id="edit" class="edit">Edit</a>
@@ -414,6 +475,7 @@
                     <th>Assigned Date</th>
                     <th>Assigned Type</th>
                     <th>Task Status</th>
+                    <th>Data Availability</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -429,6 +491,7 @@
                     <th>Assigned Date</th>
                     <th>Assigned Type</th>
                     <th>Task Status</th>
+                    <th>Data Availability</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -625,11 +688,12 @@
         function itemList(data) {
             return {
                 Status: data.Task_x0020_Status,
-                Link: data.Title,
+                Link: "https://ishareteam3.na.xom.com/sites/PDF/GIS%20Dashboard/Lists/Gis%20list/EditForm.aspx?ID=" + data.ID + "",
                 id: data.ID,
                 Country: data.Country,
                 Name: data.SegmentName,
                 GMOC: data.GMOC_x0023_,
+                Discipline:data.discipline,
                 ['Data Availability']: data.Data_x0020_Availability,
                 ["Start Date"]: data.Start_x0020_Date?.slice(0, 10),
                 ["Created date"]: data.Created?.slice(0, 10),
@@ -651,12 +715,12 @@
                 , tempStatus = {};
             data.forEach(function (data) {
                 var date = new Date(data["Start Date"]).getFullYear()
-                if (date == 1970) date = "Date Not Available"
+                if (!date) date = "Date Not Available"
                 dateList[date] = []
             })
             data.forEach(function (data) {
                 var date = new Date(data["Start Date"]).getFullYear()
-                if (date == 1970) date = "Date Not Available"
+                if (!date) date = "Date Not Available"
                 dateList[date].push(data)
             })
             for (let val in dateList) {
@@ -701,12 +765,15 @@
             const data = getData(list.results)
             const obj = getStatusList(data)
             const currentYearList = getcurrentYearList(data)
+            var currentYear = new Date().getFullYear()
 
             statusChart(obj.status, "bar")
 
-            dataAvailabilitychart(data, obj.dateList, currentYearList)
+            otdChart(data, obj.dateList, currentYearList, obj.status, currentYear)
 
-            otdChart(data, obj.dateList, currentYearList, obj.status)
+            dataAvailabilitychart(data, obj.dateList, currentYearList,currentYear)
+
+            drawingDesciplines(data, obj.dateList, currentYearList,currentYear)
 
             ///list page////
             ListPageData(currentYearList)
@@ -867,10 +934,9 @@
             }
             return ISOWeeks;
         }
-        function otdChart(data, dateList, currentYearList, status) {
+        function otdChart(data, dateList, currentYearList, status, currentYear) {
 
             var yearList = Object.keys(dateList);
-            var currentYear = new Date().getFullYear()
             otdDropdown(yearList, currentYear)
 
             $("#otd-dropdown").change(function (e) {
@@ -1107,7 +1173,7 @@
             });
 
             var colors = Highcharts.getOptions().colors,
-                categories = ["data available", "data not available"],
+                categories = ["Data available", "Data Not Available"],
                 data = [
                     {
                         y: 61.04,
@@ -1115,9 +1181,9 @@
                         color: colors[9],
 
                         drilldown: {
-                            name: "data available",
+                            name: "Data Available",
 
-                            categories: ["data available"],
+                            categories: ["Data Available"],
 
                             data: [40],
                         },
@@ -1129,9 +1195,9 @@
                         color: colors[1],
 
                         drilldown: {
-                            name: "data not available",
+                            name: "Data Not Available",
 
-                            categories: ["data not available"],
+                            categories: ["Data Not Available"],
 
                             data: [20],
                         },
@@ -1176,89 +1242,151 @@
             }
         }
     </script>
-    <script>
+   
+   <script type="text/javascript">
+ 
+function drawingDesciplines(data, dateList, currentYearList,currentYear) {
+
+    var dropdown = Object.keys(dateList)
+
+     function drawingTypeDropdown(data, selected) {
+        $("#drawing__type--dropdown").html("")
+        for (let i = 0; i < data.length; i++) {
+            var option = $('<option>').text(data[i]).attr("name", data[i])
+            if (data[i] == selected) {
+                option.attr({ "selected": 'selected' })
+            }
+             $("#drawing__type--dropdown").append(option)
+
+        }
+
+    }
 
 
 
 
-          $("#drawing__type--dropdown").change(function (e) {
-                var optionSelected = $("option:selected", this);
-                var valueSelected = this.value;
-                $("#data-type-toggle a:nth(0)").addClass('active')
-                $("#data-type-toggle a:nth(1)").removeClass('active')
-               // dataStausPieChart(getDataAvalibity(dateList[valueSelected]), "pie")
+    function getDesciplines(data) {
+        var desciplines = {
+            civil: 0,
+            mechanical: 0,
+            electrical: 0,
+        }
 
-            })
 
-            $("ul#data-type-toggle .nav-link").each(function (i, e) {
-                $(e).click(function (e) {
-                   // dataStausPieChart(getDataAvalibity(dateList[$("#data__status--dropdown").val()]), $(e.target).attr('name'))
-                    $("ul#data-type-toggle .nav-link").each(function (i, e) {
-                        $(e).removeClass("active")
-                    })
-                    $(e.target).addClass("active")
+        for (let i = 0; i < data.length; i++) {
+            if (data[i]['Discipline'] == "Civil/Structural") desciplines.civil++
+            if (data[i]['Discipline'] == "Mechanical/Process") desciplines.mechanical++
+            if (data[i]['Discipline'] == "Electrical/Instrumentation") desciplines.electrical++
+        }
+
+        return desciplines;
+    }
+    drawingTypeDropdown(dropdown, currentYear)
+
+    var desciplines = getDesciplines(currentYearList)
+
+ 
+    $("#drawing__type--dropdown").change(function (e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            $("#data-type-toggle a:nth(0)").addClass('active')
+            $("#data-type-toggle a:nth(1)").removeClass('active')
+            drawingDesciplineChart(getDesciplines(dateList[valueSelected]), "pie")
+           
+        })
+
+        $("ul#data-type-toggle .nav-link").each(function (i, e) {
+            $(e).click(function (e) {
+                drawingDesciplineChart(getDesciplines(dateList[$("#drawing__type--dropdown").val()]), $(e.target).attr('name'))
+                $("ul#data-type-toggle .nav-link").each(function (i, e) {
+                    $(e).removeClass("active")
                 })
+                $(e.target).addClass("active")
             })
+        })
 
-        // Create the chart
-        Highcharts.chart("chart--2", {
-            chart: {
-                type: "pie",
-            },
-            title: {
-                text: "Drawing Type",
-                align: "center",
-            },
-            subtitle: {
-                text: "",
-                align: "left",
-            },
+    drawingDesciplineChart(desciplines, "pie")
 
-            accessibility: {
-                announceNewData: {
-                    enabled: true,
+
+}
+
+
+
+function drawingDesciplineChart(data, label) {
+    console.log(data)
+    let total = 0;
+    total += data.civil;
+    total += data.mechanical;
+    total += data.electrical;
+
+    function getpercentage(amount) {
+        return amount / total * 100;
+    }
+
+
+
+    $("#civil-data").text(data.civil)
+    $("#electrical-data").text(data.electrical)
+    $("#mechanical-data").text(data.mechanical)
+
+
+    // Data retrieved from https://netmarketshare.com/
+    // Build the chart
+    Highcharts.chart('chart--2', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: label
+        },
+        title: {
+            text: 'Discipline Drawings Types',
+            align: 'center'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
                 },
-                point: {
-                    valueSuffix: "%",
-                },
-            },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'GIS',
+            colorByPoint: true,
+             data: [{
+                name: 'Civil/Structural',
+                y: data.civil,
+                color:'#8A307F',
+                sliced: true,
+             
+            }, {
+                name: 'Mechanical/Process',
+                y: data.mechanical,
+                color:'#174a7b',
+                selected: true
+            }, {
+                name: 'Electrical/Instrumentation',
+                color:'#54ddc4',
+                y: data.electrical
+            }]
 
-            plotOptions: {
-                series: {
-                    dataLabels: {
-                        enabled: true,
-                        format: "{point.name}: {point.y:.1f}%",
-                    },
-                },
-            },
+        }]
+    });
+}
+</script>
 
-            tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
-            },
-
-            series: [{
-                name: "Browsers",
-                colorByPoint: true,
-                data: [{
-                    name: "Civil/Structural",
-                    y: 40.04,
-                    drilldown: "Civil/Structural",
-                }, {
-                    name: "Mechanical/Process",
-                    y: 52.02,
-                    drilldown: "Mechanical/Process",
-                }, {
-                    name: "Electrical/Instrumentation",
-                    y: 7.04,
-                    drilldown: "Electrical/Instrumentation",
-                }],
-            },],
-
-        });
-    </script>
-
-
+ 
     <script type="text/javascript">
 
 
@@ -1267,6 +1395,7 @@
             var dropdown = Object.keys(dateList)
             var currentYear = new Date().getFullYear()
             function dataStatusDropdown(data, selected) {
+                $("#data__status--dropdown").html("")
                 for (let i = 0; i < data.length; i++) {
                     var option = $('<option>').text(data[i]).attr("name", data[i])
                     if (data[i] == selected) {
@@ -1299,6 +1428,7 @@
                 return status;
             }
             dataStatusDropdown(dropdown, currentYear)
+
             var dataStatus = getDataAvalibity(currentYearList)
 
 
@@ -1549,6 +1679,7 @@
             $("[name=Task_x0020_Assigned_x0020_Date]", rowElement).text(data["TaskAssigned Date"] || " ")
             $("[name=Task_x0020_Type]", rowElement).text(data["TaskAssigned Type"] || " ")
             $("[name=Task_x0020_Status]", rowElement).text(data.Status || " ")
+            $("[name=Data_x0020_Availability]", rowElement).text(data["Data Availability"] || " ")
             $("[name=actions] .view", rowElement).attr("id", id).click(viewHandlerForTaskListPage)
             $("[name=actions] .edit", rowElement).attr("id", id).click(editHandlerForTaskListPage)
             $("[name=actions] .save", rowElement).attr("id", id).click(saveHandlerForTaskListPage).hide()
@@ -1587,13 +1718,19 @@
 
     <script type="text/javascript">
 
-
+var el = document.getElementById("task-lead");
+    el.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        filterSubmit()
+      }
+    });
         var filterUsers = function (users) {
-            if ($("#name").val()) {
-                keyword = $("#name").val().toLowerCase();
+            if ($("#task-lead").val()) {
+                keyword = $("#task-lead").val().toLowerCase();
                 filtered_users = users.filter(function (user) {
-                    user = user['Task Lead'].toLowerCase();
-                    return user.indexOf(keyword) > -1;
+                    user = user['Task Lead']?.toLowerCase();
+                    return user?.indexOf(keyword) > -1;
                 });
 
                 return filtered_users;
@@ -1603,93 +1740,168 @@
 
 
         var filterUsersStatus = function (users) {
-            var keyword = $("#status").val()
-            filtered_users = users.filter(function (user) {
-                return user["Status"] == keyword;
-            });
-            return filtered_users;
+            var keyword = $("#status option:selected").val()
+            if (keyword != 'not-selected') {
+                filtered_users = users.filter(function (user) {
+                    return user["Status"] == keyword;
+                });
+                return filtered_users;
+            }
+            return users
         }
 
 
-        $("#filter-submit").click(async function (ele) {
-            var endDate, startDate, data, list;
-
-
-
-
+        $("#filter-submit").click(filterSubmit)
+        
+         async function filterSubmit() {
+            var endDate, startDate, data, list, filterUser;
             if ($("[name=dashboard]").hasClass("active")) {
                 startDate = $("#startdate").val()
                 endDate = $("#enddate").val()
                 if ($("#range").val() == "date") {
                     endDate = startDate
                 }
-                data = await ajaxget(search(startDate, endDate))
-                var filterUser = filterUsers(getData(data.results))
-                var filteredWithStatus = filterUsersStatus(filterUser)
-                if (filteredWithStatus.length) {
-                    console.log("dashboard", filteredWithStatus)
+                if ($("#task-lead").val() && !$("#startdate").val()) {
+                    data = await ajaxget(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Gis%20list')/items?$filter=startswith(Task_x0020_Lead,'" + $("#task-lead").val() + "')")
+                    var modifiedData = getData(data.results)
+                    dashboardCharts(modifiedData)
                 }
-                else {
+                if (!$("#task-lead").val()) {
+                    data = await ajaxget(search(startDate, endDate))
+                    var modifiedData = getData(data.results)
+                    dashboardCharts(modifiedData)
+                }
+                if ($("#task-lead").val() && $("#startdate").val()) {
+                    data = await ajaxget(search(startDate, endDate))
+                    var modifiedData = getData(data.results)
+                    dashboardCharts(filterUsers(modifiedData))
+                }
 
+                //  filterUser = filterUsers(modifiedData)
+
+                function dashboardCharts(data) {
+
+                    var filteredWithStatus = filterUsersStatus(data)
+                    if (filteredWithStatus.length) {
+                        const obj = getStatusList(filteredWithStatus)
+                        statusChart(obj.status, "bar")
+                        otdChart(filteredWithStatus, obj.dateList, obj.dateList[Object.keys(obj.dateList)[0]], obj.status, Object.keys(obj.dateList)[0])
+                        dataAvailabilitychart(filteredWithStatus, obj.dateList, Object.keys(obj.dateList)[0])
+                        drawingDesciplines(filteredWithStatus, obj.dateList, Object.keys(obj.dateList)[0])
+                        console.log(filteredWithStatus, obj)
+                    }
+                    else { }
                 }
+                
+              
             }
 
 
 
             if ($("[name=list-page]").hasClass("active")) {
-                startDate = $("#startdate ").val()
-                endDate = $("#enddate").val()
+
                 startDate = $("#startdate").val()
                 endDate = $("#enddate").val()
                 if ($("#range").val() == "date") {
                     endDate = startDate
                 }
-                data = await ajaxget(search(startDate, endDate))
 
-                var filterUser = filterUsers(getData(data.results))
-                var filteredWithStatus = filterUsersStatus(filterUser)
-                if (filteredWithStatus.length) {
-                    ListPageData(filteredWithStatus)
-                    if ($("#list__table tr").length >= 20) {
-                        $("#list__table tfoot").show()
-                    }
-                    console.log(filteredWithStatus)
+
+                if ($("#task-lead").val() && !$("#startdate").val()) {
+                    data = await ajaxget(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Gis%20list')/items?$filter=startswith(Task_x0020_Lead,'" + $("#task-lead").val() + "')")
+                    var modifiedData = getData(data.results)
+                    fetchFilterlistPage(modifiedData)
+
                 }
-                else {
-                    $('#list__table tbody tr').remove();
-                    $("#list__table tfoot").hide()
-                    var row = $("<tr>").html("<td colspan=8 id='data-not-avialable' > DATA NOT AVILABLE</td>")
-                    $("#list__table tbody").append(row)
+                if (!$("#task-lead").val()) {
+                    data = await ajaxget(search(startDate, endDate))
+                    var modifiedData = getData(data.results)
+                    fetchFilterlistPage(modifiedData)
+                }
+                if ($("#task-lead").val() && $("#startdate").val()) {
+                    data = await ajaxget(search(startDate, endDate))
+                    var modifiedData = getData(data.results)
+                    fetchFilterlistPage(filterUsers(modifiedData))
+                }
+
+                function fetchFilterlistPage(filterUser) {
+                    var filteredWithStatus = filterUsersStatus(filterUser)
+                    if (filteredWithStatus.length) {
+                        ListPageData(filteredWithStatus)
+                        if ($("#list__table tr").length >= 20) {
+                            $("#list__table tfoot").show()
+                        }
+                        else {
+                            $("#list__table tfoot").hide()
+                        }
+                        console.log(filteredWithStatus)
+                    }
+                    else {
+                        $('#list__table tbody tr').remove();
+                        $("#list__table tfoot").hide()
+                        var row = $("<tr>").html("<td colspan=8 id='data-not-avialable' > DATA NOT AVAILABLE</td>")
+                        $("#list__table tbody").append(row)
+                    }
                 }
             }
+
+
+
             if ($("[name=task-list-page]").hasClass("active")) {
                 startDate = $("#startdate").val()
                 endDate = $("#enddate").val()
-                startDate = $("#startdate").val()
-                endDate = $("#enddate").val()
                 if ($("#range").val() == "date") {
                     endDate = startDate
                 }
-                data = await ajaxget(search(startDate, endDate))
-                var filterUser = filterUsers(getData(data.results))
-                var filteredWithStatus = filterUsersStatus(filterUser)
-                if (filteredWithStatus.length) {
-                    TaskListPageData(filteredWithStatus)
-                    if ($("#tasklist__table tr").length >= 20) {
-                        $("#tasklist__table tfoot").show()
-                    }
-                    console.log(filteredWithStatus)
+
+
+                if ($("#task-lead").val() && !$("#startdate").val()) {
+                    data = await ajaxget(_spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Gis%20list')/items?$filter=startswith(Task_x0020_Lead,'" + $("#task-lead").val() + "')")
+                    var modifiedData = getData(data.results)
+                    fetchFilterTasklistPage(modifiedData)
+
+                }
+                if (!$("#task-lead").val()) {
+                    data = await ajaxget(search(startDate, endDate))
+                    var modifiedData = getData(data.results)
+                    fetchFilterTasklistPage(modifiedData)
+                }
+                if ($("#task-lead").val() && $("#startdate").val()) {
+                    data = await ajaxget(search(startDate, endDate))
+                    var modifiedData = getData(data.results)
+                    fetchFilterTasklistPage(filterUsers(modifiedData))
                 }
 
-                else {
-                    $('#tasklist__table tbody tr').remove();
-                    $("#tasklist__table tfoot").hide()
-                    var row = $("<tr>").html("<td colspan=6 id='data-not-avialable' > DATA NOT AVILABLE</td>")
-                    $("#tasklist__table tbody").append(row)
+
+
+                function fetchFilterTasklistPage(filterUser) {
+                    var filteredWithStatus = filterUsersStatus(filterUser)
+
+                    if (filteredWithStatus.length) {
+                        TaskListPageData(filteredWithStatus)
+                        if ($("#tasklist__table tr").length >= 20) {
+                            $("#tasklist__table tfoot").show()
+                        }
+                        else {
+                            $("#tasklist__table tfoot").hide()
+
+                        }
+                        console.log(filteredWithStatus)
+                    }
+
+                    else {
+                        $('#tasklist__table tbody tr').remove();
+                        $("#tasklist__table tfoot").hide()
+                        var row = $("<tr>").html("<td colspan=6 id='data-not-avialable' > DATA NOT AVAILABLE</td>")
+                        $("#tasklist__table tbody").append(row)
+                    }
+
+
+
                 }
             }
 
-        });
+        };
 
         // get search filters and get data
         function search(startDate, endDate) {
@@ -1727,4 +1939,4 @@
     </script>
 </body>
 
-</html>
+</html>  
